@@ -1,17 +1,17 @@
 import tensorflow as tf
 
-# 학습된 모델 불러오기
+# 모델 불러오기
 model = tf.keras.models.load_model("sixcnn_model.h5")
 
-# TFLite 변환기 사용
+# 변환기 초기화
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
 
-# 최적화 옵션 설정 (파라미터 수 줄이기)
-converter.optimizations = [tf.lite.Optimize.DEFAULT]
+# 하위 연산자 버전 강제
+converter.target_spec.supported_ops = [tf.lite.OpsSet.TFLITE_BUILTINS]
 
-# 변환 실행
+# 변환 수행
 tflite_model = converter.convert()
 
-# 파일로 저장
-with open("model.tflite", "wb") as f:
+# 저장
+with open("model_2.tflite", "wb") as f:
     f.write(tflite_model)
